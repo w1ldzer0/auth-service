@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:1.23.1
+    volumes:
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/
+    ports:
+      - ${NGINX_PORT}:80
+    depends_on:
+      - php
+      - redis
+    restart: always
+  php:
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      context: .
+    volumes:
+      - ./:/var/www:cached
+    depends_on:
+      - redis
+      - rabbitmq
+    restart: always
+    environment:
+      - XDEBUG_ENABLE
+      - XDEBUG_CLIENT_HOST
+      - XDEBUG_CLIENT_PORT
+      - XDEBUG_MODE
+      - XDEBUG_IDE_KEY
+  redis:
+    image: redis:7.0.4
+    ports:
+      - ${REDIS_PORT}:6379
+  composer:
+    image: composer:2.4.1
+    volumes:
+      - ./:/app
+    command: install
+  rabbitmq:
+    container_name: ${APP_NAME}-rabbitmq
+    image: rabbitmq:3.10.0-rc.1-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./docker/var/rabbitmq:/var/lib/rabbitmq/:cached
+    ports:
+      - ${RABBIT_PORT}:15672

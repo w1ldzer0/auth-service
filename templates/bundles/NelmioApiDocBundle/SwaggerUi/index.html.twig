@@ -1,0 +1,9 @@
+{% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
+
+{% block header_block %}
+    <header>
+        {% block header %}
+            <img id="logo" width="270" src="{{ asset('images/logo.png') }}" alt="{{ swagger_data.spec.info.title }}">
+        {% endblock header %}
+    </header>
+{% endblock header_block %}

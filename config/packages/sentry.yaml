@@ -1,0 +1,17 @@
+when@prod:
+    sentry:
+        dsn: '%env(SENTRY_DSN)%'
+        options:
+            integrations:
+                - 'Sentry\Integration\IgnoreErrorsIntegration'
+
+    services:
+        Sentry\Integration\IgnoreErrorsIntegration:
+            arguments:
+                $options:
+                    ignore_exceptions:
+                        - Symfony\Component\HttpKernel\Exception\HttpException
+                        - App\Shared\Exception\AuthenticationException
+                        - App\Shared\Exception\NotValidateCodeException
+                        - App\Shared\Exception\RequestValidateException
+                        - App\Shared\Exception\UniqueConstraintViolationException

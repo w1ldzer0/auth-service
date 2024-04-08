@@ -1,0 +1,13 @@
+framework:
+    messenger:
+        transports:
+            notification_email_command_sender:
+                dsn: '%env(RABBITMQ_URL)%'
+                serializer: messenger.transport.symfony_serializer
+                options:
+                    exchange:
+                        name: notification.command.dx
+                        type: direct
+                        default_publish_routing_key: send_email.rk
+        routing:
+            App\Notification\Message\EmailMessage: notification_email_command_sender

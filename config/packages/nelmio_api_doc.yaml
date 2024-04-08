@@ -1,0 +1,13 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Auth service
+            description: This is authentication service
+            version: 1.0.0
+
+    areas:
+        path_patterns:
+            - ^/register
+            - ^/auth
+            - ^/jwt-token
+            - ^/oauth

@@ -1,0 +1,41 @@
+parameters:
+    app.environment: '%kernel.environment%'
+    ttl.code_verify: '%env(TTL_CODE_VERIFY)%'
+    ttl.code_recovery_password: '%env(TTL_CODE_RECOVERY_PASSWORD)%'
+    ttl.refresh_token: '%env(TTL_REFRESH_TOKEN)%'
+    recovery_password_url: '%env(RECOVERY_PASSWORD_URL)%'
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Kernel.php'
+            - '../src/Request/'
+            - '../src/User/Register/Model/'
+            - '../src/Auth/Oauth/Google/Request/'
+            - '../src/JwtToken/Request/'
+            - '../src/Auth/Login/Request/'
+            - '../src/Auth/Register/Request/'
+            - '../src/Auth/Password/Request/'
+
+    FOS\RestBundle\Request\RequestBodyParamConverter: '@fos_rest.converter.request_body'
+
+    Symfony\Component\Serializer\Normalizer\ObjectNormalizer:
+        arguments: [ '@serializer.mapping.class_metadata_factory', '@serializer.name_converter.camel_case_to_snake_case' ]
+        tags: [ serializer.normalizer ]
+
+    App\JwtToken\Repository\FilePublicKeyRepository:
+        arguments:
+            $keyLoader: '@lexik_jwt_authentication.key_loader'
+
+    app.param_converter.request_body_converter:
+        class: App\Shared\ParamConverter\RequestBodyParamConverter
+        tags:
+            - {
+                name: request.param_converter,
+                converter: !php/const App\Shared\ParamConverter\RequestBodyParamConverter::REQUEST_BODY_CONVERTER
+            }

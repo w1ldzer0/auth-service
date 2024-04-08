@@ -1,0 +1,10 @@
+framework:
+    cache:
+        prefix_seed: '%env(APP_NAME)%'
+        pools:
+            cache.redis.code_verify:
+                provider: '%env(REDIS_URL)%'
+                adapter: cache.adapter.redis
+            cache.redis.refresh_token:
+                provider: '%env(REDIS_URL)%'
+                adapter: cache.adapter.redis

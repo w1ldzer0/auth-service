@@ -1,0 +1,36 @@
+register_api_v1:
+    resource: ../src/Auth/Register/Action/Api/V1
+    type: attribute
+    name_prefix: 'api_v1_'
+    condition: "request.attributes.get('version') == '1.0'"
+    format: 'json'
+
+login_api_v1:
+    resource: ../src/Auth/Login/Action/Api/V1
+    type: attribute
+    name_prefix: 'api_v1_'
+    condition: "request.attributes.get('version') == '1.0'"
+    format: 'json'
+
+password_api_v1:
+    resource: ../src/Auth/Password/Action/Api/V1
+    type: attribute
+    name_prefix: 'api_v1_'
+    condition: "request.attributes.get('version') == '1.0'"
+    format: 'json'
+
+jwt_token_v1:
+    resource: ../src/JwtToken/Action/Api/V1
+    type: attribute
+    name_prefix: 'api_v1_'
+    condition: "request.attributes.get('version') == '1.0'"
+    format: 'json'
+
+oauth_api_v1:
+    resource: ../src/Auth/Oauth/Google/Action/Api/V1
+    type: attribute
+    prefix: '/auth/'
+    name_prefix: 'auth_oauth_'
+    condition: "request.attributes.get('version') == '1.0'"
+    format: 'json'
+    trailing_slash_on_root: false
